@@ -1,0 +1,10 @@
+----------Members of [User]----------
+Function getPosts
+Function setPosts
+Function addPost
+Function addPosts
+Number dataValues.id
+String dataValues.firstName
+String dataValues.lastName
+Date dataValues.createdAt
+Date dataValues.updatedAt

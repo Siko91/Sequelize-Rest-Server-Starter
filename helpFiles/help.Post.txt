@@ -1,0 +1,9 @@
+----------Members of [Post]----------
+Function getUser
+Function setUser
+Number dataValues.id
+String dataValues.title
+String dataValues.text
+Date dataValues.createdAt
+Date dataValues.updatedAt
+Number dataValues.UserId
