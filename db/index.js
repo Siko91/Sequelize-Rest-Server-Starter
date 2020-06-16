@@ -38,7 +38,7 @@ async function define(sequelize, forceSync) {
     var db = { sequelize, Sequelize, create: createFunction };
     for (const name in models) db[name] = sequelize.define(name, models[name]);
     modelDefinitions.connectModels(db);
-    for (const name in models) db[name].sync({ force: forceSync });
+    for (const name in models) await db[name].sync({ force: forceSync });
     return db;
 }
 
@@ -90,16 +90,24 @@ async function createFakeItemsForModel(
     count,
     valueGetters = { fieldName: () => undefined }
 ) {
-    function getValues() {
+    function getValues(i) {
         var values = {};
         Object.keys(valueGetters).forEach(
-            (key) => (values[key] = valueGetters[key]())
+            (key) => (values[key] = valueGetters[key](i))
         );
         return values;
     }
 
     for (let i = 0; i < count; i++) {
-        await db.create(db[modelName], getValues());
+        var values = getValues(i);
+        try {
+            await db.create(db[modelName], values);
+        } catch (error) {
+            console.error(error);
+            console.error("When inserting " + modelName);
+            console.error(JSON.stringify(values, null, 2));
+            throw error;
+        }
     }
 }
 
